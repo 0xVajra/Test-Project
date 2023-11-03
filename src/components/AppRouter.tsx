@@ -19,14 +19,14 @@ const AppRouter = () => {
     </Routes>
     :
     <Routes>
-        {publicRoutes.map((route) => (
-            <Route path={route.path}
-                   element={<route.component />}   
-                   key={route.path} />))}
-        <Route path="/"
-               element={<Navigate to='/login' replace/>}/>
-        <Route path="*"
-               element={<Navigate to='/' replace/>}/>
+    {publicRoutes.map((route) => (
+        <Route path={route.path}
+               element={<route.component />}   
+               key={route.path} />))}
+    <Route path="/"
+           element={<Navigate to='/login' replace/>}/>
+    <Route path="*"
+           element={<Navigate to='/' replace/>}/>
     </Routes>
     )
 }
