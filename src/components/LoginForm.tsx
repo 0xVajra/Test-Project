@@ -1,11 +1,11 @@
-import { Button, Form } from "antd";
-import FormItem from "antd/es/form/FormItem";
-import Input from "antd/es/input/Input";
-import { FC } from "react";
+import { Button, Form, Input} from "antd";
+import { FC, useState } from "react";
 import { rules } from "../utils/rules";
 import { useDispatch } from "react-redux";
 import { AuthActionCreators } from "../store/reducers/auth/action-creators";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import { useAction } from "../hooks/useAction";
+
 
 
 
@@ -13,9 +13,12 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 const LoginForm: FC = () => {
     const dispatch = useDispatch()
     const {error,isLoading} = useTypedSelector(state => state.auth);
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const {login} = useAction()
+
     const submit = () => {
-        dispatch<any>(AuthActionCreators.login('user','123'))
-        
+        login(username, password)
     }
     return (
         <Form
@@ -24,29 +27,35 @@ const LoginForm: FC = () => {
             {error && <div style={{color: 'red'}}>
                 {error}
             </div>}
-            <FormItem
+            <Form.Item
                 label="Имя пользователя"
                 name="username"
                 rules={[rules.required("Введите имя пользователя")]}
             >
-                <Input
+                <Input 
+                    value={username} 
+                    onChange={e => setUsername(e.target.value)}
                 />
-            </FormItem>
-            <FormItem
+            </Form.Item>
+            <Form.Item
                 label="Пароль"
                 name="password"
                 rules={[rules.required("Введите пароль")]}
             >
-                <Input/>
-            </FormItem>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Input 
+                value={password} 
+                onChange={e => setPassword(e.target.value)}
+                type={'password'}
+                />
+            </Form.Item>
+            <Form.Item>
                 <Button type="primary" htmlType="submit" loading={isLoading}>
                     Войти
                 </Button>
             </Form.Item>
         </Form>
-    )
-}
+    );
+};
 
 
 

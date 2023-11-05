@@ -14,9 +14,8 @@ export const AuthActionCreators = {
             dispatch(AuthActionCreators.setIsLoading(true));
             setTimeout(async () => {
                 const response = await axios.get<IUser[]>('./users.json')
-                const mockUser = response.data.find(user => user.username === username && user.password === password)
-                console.log(mockUser)
-                if(mockUser) {
+                const mockUser = response.data.find(el => el.username === username && el.password === password);
+                if (mockUser) {
                     localStorage.setItem('auth', 'true');
                     localStorage.setItem('username', mockUser.username);
                     dispatch(AuthActionCreators.setUser(mockUser));
@@ -25,15 +24,15 @@ export const AuthActionCreators = {
                     dispatch(AuthActionCreators.setError('Неверный логин или пароль'))
                 }
                 dispatch(AuthActionCreators.setIsLoading(false));
-            },3000)
-        } catch (error) {
+            }, 1000)
+        } catch (e) {
             dispatch(AuthActionCreators.setError("Ошибка авторизации"))
         }
     },
-    logout: () =>async (dispatch: AppDispatch) => {
-        localStorage.removeItem('auth')
-        localStorage.removeItem('username')
-        dispatch(AuthActionCreators.setUser({} as IUser));
-        dispatch(AuthActionCreators.setIsAuth(false))
+    logout: () => async (dispatch: AppDispatch) => {
+            localStorage.removeItem('auth')
+            localStorage.removeItem('username')
+            dispatch(AuthActionCreators.setUser({} as IUser))
+            dispatch(AuthActionCreators.setIsAuth(false))
     }
 }
