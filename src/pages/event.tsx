@@ -1,19 +1,35 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import EventCalendar from "../components/EventCalendar";
-import { Button, Modal, Row } from "antd";
+import { Button, Layout, Modal, Row } from "antd";
 import EventForm from "../components/EventForm";
+import { useAction } from "../hooks/useAction";
+import { useTypedSelector } from "../hooks/useTypedSelector";
+import { IEvent } from "../models/IEvent";
 
 
 const Event: FC = () => {
     const [modalOpen, setModalOpen] = useState(false);
+    const { fetchGuets, createEvent, fetchEvents } = useAction()
+    const { guests, events } = useTypedSelector(state => state.event)
+    const { user } = useTypedSelector(state => state.auth)
+
+    useEffect(() => {
+        fetchGuets()
+        fetchEvents(user.username)
+    }, [])
+
+    const addNewEvent = (event: IEvent) => {
+        setModalOpen(false);
+        createEvent(event)
+    }
     return (
-        <div>
-            <EventCalendar events={[]}/>
+        <Layout>
+            <EventCalendar events={events} />
             <Row justify={"center"}>
                 <Button
-                  onClick={() => setModalOpen(true)}
-                > 
-                Добавить событие 
+                    onClick={() => setModalOpen(true)}
+                >
+                    Добавить событие
                 </Button>
             </Row>
             <Modal
@@ -22,9 +38,12 @@ const Event: FC = () => {
                 footer={null}
                 onCancel={() => setModalOpen(false)}
             >
-               <EventForm/>
+                <EventForm
+                    guests={guests}
+                    submit={addNewEvent}
+                />
             </Modal>
-        </div>
+        </Layout>
     )
 }
 

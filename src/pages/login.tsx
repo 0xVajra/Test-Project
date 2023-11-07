@@ -8,9 +8,9 @@ const Login: FC = () => {
     return (
         <Layout>
             <Row justify="center" align="middle" className="h100">
-              <Card>
-                <LoginForm/>
-              </Card>
+                <Card>
+                    <LoginForm />
+                </Card>
             </Row>
         </Layout>
     )

@@ -4,7 +4,7 @@ import { AuthAction, AuthActionsEnum, AuthState } from "./types";
 
 
 const initialState = {
-    isAuth:false,
+    isAuth: false,
     error: "",
     isLoading: false,
     user: {} as IUser

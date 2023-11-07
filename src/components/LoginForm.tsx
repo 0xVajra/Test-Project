@@ -11,7 +11,6 @@ import { useAction } from "../hooks/useAction";
 
 
 const LoginForm: FC = () => {
-    const dispatch = useDispatch()
     const {error,isLoading} = useTypedSelector(state => state.auth);
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')

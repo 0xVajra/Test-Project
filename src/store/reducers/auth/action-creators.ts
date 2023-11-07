@@ -1,7 +1,7 @@
-import axios from "axios";
 import { AppDispatch } from "../.."
 import { IUser } from "../../../models/IUser"
 import { SetIsLoadingAction, SetUserAction, SetErrorAction, SetAuthAction, AuthActionsEnum } from "./types"
+import UserService from "../../../api/UserService";
 
 
 export const AuthActionCreators = {
@@ -13,13 +13,13 @@ export const AuthActionCreators = {
         try {
             dispatch(AuthActionCreators.setIsLoading(true));
             setTimeout(async () => {
-                const response = await axios.get<IUser[]>('./users.json')
-                const mockUser = response.data.find(el => el.username === username && el.password === password);
-                if (mockUser) {
+                const response = await UserService.getUsers()
+                const mockUser = response.data.find(user => user.username === username && user.password === password);
+                if (mockUser) { 
                     localStorage.setItem('auth', 'true');
                     localStorage.setItem('username', mockUser.username);
-                    dispatch(AuthActionCreators.setUser(mockUser));
                     dispatch(AuthActionCreators.setIsAuth(true));
+                    dispatch(AuthActionCreators.setUser(mockUser));
                 } else {
                     dispatch(AuthActionCreators.setError('Неверный логин или пароль'))
                 }
